@@ -1,12 +1,20 @@
 ---
-AIGC:
-    Label: "1"
-    ContentProducer: 001191440300708461136T1XGW3
-    ProduceID: f114db32c8f49bbd4c4c544cd9de808d_a83fb01d673011f1a99c5254007bceed
-    ReservedCode1: /xAAb600pBXEsVJa/PRNmPDg8urviOv3O15w87iweuHNaVQeFVb48x/DmFPhYzBjULeR4GiG+G2tuoqjru60Lsi6+e6jLhCdGPgIXfcfgU5GIUrpxsMii6JvY8x1dpfyKnVeb3XI5vU6uL0dCRl8lh09JaNX973ChCu7UR4xMD6agUY1IcDQQLN+QGg=
-    ContentPropagator: 001191440300708461136T1XGW3
-    PropagateID: f114db32c8f49bbd4c4c544cd9de808d_a83fb01d673011f1a99c5254007bceed
-    ReservedCode2: /xAAb600pBXEsVJa/PRNmPDg8urviOv3O15w87iweuHNaVQeFVb48x/DmFPhYzBjULeR4GiG+G2tuoqjru60Lsi6+e6jLhCdGPgIXfcfgU5GIUrpxsMii6JvY8x1dpfyKnVeb3XI5vU6uL0dCRl8lh09JaNX973ChCu7UR4xMD6agUY1IcDQQLN+QGg=
+name: knowledge-engineering
+description: "工业级RAG切片工具「可落地、可量化、可优化」,将RAG知识库长文档拆解为语义完整、检索就绪的原子化知识切片，内置多层质量门禁（校验→审计→检索可达性评估），确保切片可用性与RAG检索命中率。"
+keywords: ["rag", "切片", "知识库", "语义分割", "检索增强生成", "chunking", "文档拆分", "质量门禁", "embedding-hint", "self-check", "PurePythonEmbedder", "retrieval-evaluation", "cross-refs"]
+version: "5.19"
+metadata:
+  domain: "knowledge-engineering"
+  author: "智慧半岛"
+  platform:
+    windows: full
+    linux: full
+    macos: full
+  openclaw:
+    requires:
+      bins:
+        - python
+    emoji: "📚"
 ---
 
 
