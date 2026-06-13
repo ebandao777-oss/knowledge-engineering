@@ -2,7 +2,7 @@
 name: knowledge-engineering
 description: "工业级RAG切片工具「可落地、可量化、可优化」,将RAG知识库长文档拆解为语义完整、检索就绪的原子化知识切片，内置多层质量门禁（校验→审计→检索可达性评估），确保切片可用性与RAG检索命中率。"
 keywords: ["rag", "切片", "知识库", "语义分割", "检索增强生成", "chunking", "文档拆分", "质量门禁", "embedding-hint", "self-check", "PurePythonEmbedder", "retrieval-evaluation", "cross-refs"]
-version: "5.19"
+version: "1.0.12"
 metadata:
   domain: "knowledge-engineering"
   author: "智慧半岛"
@@ -16,8 +16,6 @@ metadata:
         - python
     emoji: "📚"
 ---
-
-
 
 > 文档结构：SKILL.md = 核心运行时指令（Agent 执行必读），REFERENCE.md = 扩展参考与运维细节。
 
@@ -254,4 +252,3 @@ metadata:
 ## 12. 平台兼容性 (Platform & Changelog)
 
 Windows / Linux / macOS 三平台完全支持。关键约束：网络驱动器用 `python_executor`；`evaluate_retrieval.py` 三层嵌入降级路由（SBERT → 自动安装 → PurePythonEmbedder）；所有脚本使用 `pathlib.Path`。详见 [REFERENCE.md §10](REFERENCE.md)。
-*（内容由AI生成，仅供参考）*
