@@ -2,7 +2,7 @@
 name: knowledge-engineering
 description: "工业级RAG切片工具「可落地、可量化、可优化」,将RAG知识库长文档拆解为语义完整、检索就绪的原子化知识切片，内置多层质量门禁（校验→审计→检索可达性评估），确保切片可用性与RAG检索命中率。"
 keywords: ["rag", "切片", "知识库", "语义分割", "检索增强生成", "chunking", "文档拆分", "质量门禁", "embedding-hint", "self-check", "PurePythonEmbedder", "retrieval-evaluation", "cross-refs"]
-version: "5.19"
+version: "5.20"
 metadata:
   domain: "knowledge-engineering"
   author: "智慧半岛"
@@ -34,6 +34,24 @@ metadata:
 | ③ 生成 | 逐切片填充语义内容 + 写入磁盘 | Agent 按 §3 模板生成 | 带完整 YAML 的 .md 切片 | §3, §6-7 |
 | ④ 校验 | 单切片完整性 + 跨切片审计 | `validate_slice.py --fix` → `batch_audit.py` | 致命项重生成 / 警告标记 | §4, §8.2-8.3 |
 | ⑤ 终检 | 检索可达性评估（R@1/R@5/MRR） | `evaluate_retrieval.py --fix` | 检索报告 + 死片/弱片修复 | §8.5 |
+
+## Init-Step-Poll 渐进式防卡死协议
+
+长文档切片、批量知识库导入、检索评估和断点续传必须采用 Init → Step → Poll。该协议不替代标准工作流，而是把标准工作流拆成可恢复、可验证的小步，防止 Token 溢出、长时间生成中断或部分切片失败后无法归因。
+
+| 阶段 | 动作 | 输出 | 失败回退 |
+|:---|:---|:---|:---|
+| Init | 完成结构扫描、Token 预算、熔断点预演、切片计划生成和输出目录确认 | `task_id`、切片计划 JSON、总切片数、批次大小、当前进度 `0/N` | 源文件不可读、计划为空或输出目录冲突时停止，等待用户确认 |
+| Step | 每次只生成 1-2 个切片，立即写入、运行 `validate_slice.py --fix` 并记录 `SELF_CHECK` | 已生成切片 ID、校验结果、下一批切片范围 | 单片校验失败时重生成该片；仍失败则暂停并输出失败字段 |
+| Poll | 汇总已生成/已验证/失败/待生成数量，必要时运行 `batch_audit.py` 或检索抽检 | `running/success/failed/paused`、进度百分比、失败清单、续跑入口 | 中断后从最后一个 `SELF_CHECK` 通过的切片继续，不得覆盖已验证切片 |
+
+执行约束：
+
+- Init 阶段只生成计划和任务状态，不直接批量写切片正文。
+- Step 阶段不得一次性生成全部切片；超大文档每批最多 2 片，普通文档每批最多 5 片。
+- Poll 阶段完成度只能按“已通过校验切片数 / 计划切片数”计算，未校验切片不得计入完成。
+- 出现 Token 溢出、索引跳号、死链或检索死片时，必须先 Poll 当前状态，再回到对应 Step 修复。
+- 最终交付前必须执行 `batch_audit.py` 和 `evaluate_retrieval.py`，并输出审计/检索验证证据。
 
 ## Goal
 作为 RAG/知识库管线的核心 ETL 引擎，将长文档拆解为**语义完整、物理隔离、自包含、检索就绪**的 L0 级原子切片。

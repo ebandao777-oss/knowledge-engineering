@@ -248,7 +248,7 @@ Agent 在 `<analysis>` 中完成 10 步推理后输出确认摘要：
 
 **第三步：生成阶段**
 Agent 逐批生成切片文件。以 `api/api_001-auth-login.md` 为例，生成内容：
-```markdown
+````markdown
 ---
 title: "UserAuth API > auth.login()"
 source_id: "user-auth"
@@ -301,7 +301,7 @@ result = auth.login(username="admin", password="pass123", timeout=30)
 - 登出接口见 [api_002-auth-logout.md](api_002-auth-logout.md)
 
 > 📎 续接切片：api_002-auth-logout.md
-```
+````
 
 **第四步：校验阶段**
 每片写入后自动运行 `validate_slice.py --fix`，输出：
