@@ -18,6 +18,14 @@ keywords:
     "cross-refs",
   ]
 version: "1.0.13"
+license: MIT
+allowed-tools:
+  - Read
+  - Grep
+  - Glob
+  - Shell
+  - Edit
+  - Write
 metadata:
   domain: "knowledge-engineering"
   author: "智慧半岛"
